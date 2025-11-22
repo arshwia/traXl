@@ -60,7 +60,7 @@ async function main() {
                         },
                         cell: {
                             userEnteredValue: {
-                                formulaValue: '=GOOGLETRANSLATE(A2,"en","fa")'
+                                formulaValue: '=GOOGLETRANSLATE(A1,"en","fa")'
                             },
                         },
                         fields: "userEnteredValue",
