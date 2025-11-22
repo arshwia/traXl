@@ -1,7 +1,7 @@
 {
   "name": "traxl",
-  "version": "1.0.0",
-  "main": "server.js",
+  "version": "2.1.2",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -9,7 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "nodemon": "^3.1.11",
-    "xlsx": "^0.18.5"
+    "fs": "^0.0.1-security",
+    "googleapis": "^166.0.0",
+    "nodemon": "^3.1.11"
   }
 }
