@@ -20,10 +20,11 @@ async function dialoguesTra() {
     const sheet = google.sheets({ version: 'v4', auth: client });
 
     const srt = fs.readFileSync(SRT_INPUT, 'utf-8');
-    let lines = srt.split('\n');
+    lines.length = 0;
+    lines.push(...srt.split('\n'));
 
     // Extract dialog lines
-    const dialogs = [];
+    dialogs.length = 0;
     for (const line of lines) {
         if (/^\d+$/.test(line.trim())) continue; // Skip index number
         if (line.includes('-->')) continue; // Skip timestamp
@@ -66,10 +67,10 @@ async function dialoguesTra() {
     });
 
     console.log(
-        `dialogs length : ${dialogs.length} \n\n Writing dialogs to Google Sheet...`
+        `dialogs length : ${dialogs.length}\n\nWriting dialogs to Google Sheet...`
     );
 
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 500));
 
     // Read translated column
     const result = await sheet.spreadsheets.values.get({
@@ -77,7 +78,8 @@ async function dialoguesTra() {
         range: 'Sheet1!B1:B',
     });
 
-    const translated = (result.data.values || []).map(([cell]) => cell);
+    translated.length = 0;
+    translated.push(...(result.data.values || []).map(([cell]) => cell));
 }
 
 module.exports = {

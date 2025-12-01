@@ -1,3 +1,5 @@
+// چیز های که به صورت گلوبال بهشون نیاز داریم
+
 const { google } = require('googleapis');
 const fs = require('fs');
 
