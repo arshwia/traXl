@@ -1,2 +1,4 @@
 node_modules/
 /service-account.json
+/input.srt
+/translated.srt
