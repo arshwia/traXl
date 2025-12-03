@@ -70,8 +70,6 @@ async function dialoguesTra() {
         `dialogs length : ${dialogs.length}\n\nWriting dialogs to Google Sheet...`
     );
 
-    await new Promise((r) => setTimeout(r, 500));
-
     // Read translated column
     const result = await sheet.spreadsheets.values.get({
         spreadsheetId: SHEET_ID,

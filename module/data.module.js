@@ -8,7 +8,7 @@ let lines = [];
 let translated = [];
 
 const auth = new google.auth.GoogleAuth({
-    keyFile: 'C:/Users/Arsh/Desktop/traXl3/service-account.json',
+    keyFile: 'C:/Users/Arsh/Desktop/traXl/service-account.json',
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
