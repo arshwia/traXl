@@ -1,11 +1,9 @@
 console.clear();
-const { dialoguesTra } = require('./module/dialoguesTra.module');
-const { createdSRTfinal } = require('./module/createDialogs.module');
+
+const { processSrtFile } = require('./controllers/srt.controller');
 
 async function main() {
-    await dialoguesTra();
-    createdSRTfinal();
+    await processSrtFile();
 }
 
-main().catch((err) => console.log(err));
-//for comiit
+main();
