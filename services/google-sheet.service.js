@@ -21,35 +21,47 @@ async function translateDialogs(dialogs) {
     });
 
     // اعمال دستور ترجمه با استفاده از گوگل ترنسلید
-    await sheet.spreadsheets.batchUpdate({
-        spreadsheetId: SHEET_ID,
-        requestBody: {
-            requests: [
-                {
-                    repeatCell: {
-                        range: {
-                            sheetId: 0,
-                            startColumnIndex: 1,
-                            endColumnIndex: 2,
-                            startRowIndex: 0,
-                        },
-                        cell: {
-                            userEnteredValue: {
-                                formulaValue: '=GOOGLETRANSLATE(A1,"en","fa")',
+    async function batchUpdate() {
+        await sheet.spreadsheets.batchUpdate({
+            spreadsheetId: SHEET_ID,
+            requestBody: {
+                requests: [
+                    {
+                        repeatCell: {
+                            range: {
+                                sheetId: 0,
+                                startColumnIndex: 1,
+                                endColumnIndex: 2,
+                                startRowIndex: 0,
                             },
+                            cell: {
+                                userEnteredValue: {
+                                    formulaValue:
+                                        '=GOOGLETRANSLATE(A1,"en","fa")',
+                                },
+                            },
+                            fields: 'userEnteredValue',
                         },
-                        fields: 'userEnteredValue',
                     },
-                },
-            ],
-        },
-    });
+                ],
+            },
+        });
+    }
+    batchUpdate();
 
     //گرفتن دیالوگ های ترجمه شده
     const result = await sheet.spreadsheets.values.get({
         spreadsheetId: SHEET_ID,
         range: 'Sheet1!B1:B',
     });
+
+    // چک کردن این که ایا هنوز دیالوگی هست که داخل فایل ترجمه نشده باشه یا نه
+    for (const value of result.data.values) {
+        if (value[0] === 'Loading...') {
+            batchUpdate();
+            break;
+        }
+    }
 
     // برگردونندن دیالوگ های ترجمه شده
     return result.data.values?.map(([cell]) => cell || []);
