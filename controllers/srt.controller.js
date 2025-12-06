@@ -7,7 +7,9 @@ const { createTranslatedSrt } = require('../views/srt.view');
  */
 async function processSrtFile() {
     const { lines, dialogs } = readSrtFile();
+    console.log('1 side done');
     const translated = await translateDialogs(dialogs);
+    console.log('2 side done');
     createTranslatedSrt(lines, translated);
 
     console.log('DONE: translated.srt created.');
