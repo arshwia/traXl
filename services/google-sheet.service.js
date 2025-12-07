@@ -5,12 +5,10 @@ const SHEET_ID = '1x7xYBLZq_CgEZXzYV4mYXdPqNrvsTHrhsvo0DHJZjMw';
  * ترجمه و گرفتن دیالوگ ها با استفاده از گوگل شیت
  */
 async function translateDialogs(dialogs) {
-    //احراز هویت و کانکت شدن به گوگل شیت
     const client = await auth.getClient();
-    //ایجاد یک شیع برای برقراری ارتباط و خواندن و نوشتن
     const sheet = google.sheets({ version: 'v4', auth: client });
 
-    //نوشتن دیالوگ های خام روی گوگل شیت
+    // نوشتن متون خام
     await sheet.spreadsheets.values.update({
         spreadsheetId: SHEET_ID,
         range: 'Sheet1!A1',
@@ -20,7 +18,6 @@ async function translateDialogs(dialogs) {
         },
     });
 
-    // اعمال دستور ترجمه با استفاده از گوگل ترنسلید
     async function batchUpdate() {
         await sheet.spreadsheets.batchUpdate({
             spreadsheetId: SHEET_ID,
@@ -47,25 +44,32 @@ async function translateDialogs(dialogs) {
             },
         });
     }
-    batchUpdate();
 
-    //گرفتن دیالوگ های ترجمه شده
-    const result = await sheet.spreadsheets.values.get({
-        spreadsheetId: SHEET_ID,
-        range: 'Sheet1!B1:B',
-    });
+    // اجرای اولیه
+    await batchUpdate();
 
-    // چک کردن این که ایا هنوز دیالوگی هست که داخل فایل ترجمه نشده باشه یا نه
-    for (const value of result.data.values) {
-        if (value[0] === 'Loading...') {
-            batchUpdate();
-            break;
-        }
+    // Loop برای انتظار تا تکمیل ترجمه
+    let translatedValues;
+    while (true) {
+        const result = await sheet.spreadsheets.values.get({
+            spreadsheetId: SHEET_ID,
+            range: 'Sheet1!B1:B',
+        });
+
+        translatedValues = result.data.values || [];
+
+        // آیا هنوز Loading وجود دارد؟
+        const hasLoading = translatedValues.some((v) => v[0] === 'Loading...');
+
+        if (!hasLoading) break; // ترجمه کامل شد
+
+        // اگر هنوز ترجمه نشده بود: دوباره Update و کمی صبر
+        await batchUpdate();
+        await new Promise((r) => setTimeout(r, 1000)); // یک ثانیه صبر
     }
 
-    // برگردونندن دیالوگ های ترجمه شده
-    return result.data.values?.map(([cell]) => cell || []);
+    // برگرداندن ترجمه
+    return translatedValues.map(([cell]) => cell);
 }
-
 // اکسپورت کردن فانکشنمون
 module.exports = { translateDialogs };
