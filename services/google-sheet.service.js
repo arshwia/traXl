@@ -62,7 +62,7 @@ async function translateDialogs(dialogs) {
         const hasLoading = translatedValues.some((v) => v[0] === 'Loading...');
 
         if (!hasLoading) break; // ترجمه کامل شد
-
+        console.log('no traXl done');
         // اگر هنوز ترجمه نشده بود: دوباره Update و کمی صبر
         await batchUpdate();
         await new Promise((r) => setTimeout(r, 1000)); // یک ثانیه صبر
