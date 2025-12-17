@@ -1,39 +1,101 @@
-1 فعال کردن google sheet api
-  اول میری داخل این سایت "console.cloud.google.com"
-  بالا سمت چپ بغل ارم گوگل روی اون کلیک میکنی 
-  یک پروژه میسازی
+<!-- ================= ENGLISH VERSION ================= -->
 
-  برای اون پروژه که ساختی google sheet api رو فعال میکنی
-    سرچ میکنی "google sheet api" و فعالش میکنی
-  (این مراحل رو با وی پی ان انجام بدید)
-  حالا api kye رو باید به صورت فایل جیسون بگیری
-    روی اون سه خط بالای صفحه کلیک میکنی
-    APIs & Services > Credentials 
-    روی "Create credentials" کلیک میکنی 
-    بعد روی "Service account" کلیک میکنی
-    یک اسمی براش میزاری اصلا هم مهم نیست و روی دان کلیک میکنی
-    داخل این صفحه "https://console.cloud.google.com/apis/credentials?project=<حالا هرجیزی که اسم پروژتون هست> 
-    داخل بخش "Service Accounts" روی اونی که ساختید کلیک کنید
-    از سربرگ ها به سربرگ keys بروید
-    روی دکمه add key و بعد روی Create new key کلیک کنید
-    روی جیسون و کریت رو بزنید
-    یک فایل جیسون برای شما دانلود میشه که ان رو در روت پروژه خوب بزارید و نام ان را به "service-account.json" تغییر دهید
+<h1 align="center">traXl</h1>
+<h3 align="center">Automated SRT Subtitle Translation via Google Sheets</h3>
 
-2 خود سایت گوگل شیت را باز کنید
- "https://workspace.google.com/products/sheets"
- بعد از لاگین کردن یک شیت جدید ساخته و اسم ان را "Sheet1" بگذارید
- در صفحه اصلی شیت بالا سمت چپ روی شیر کلیک کرده
- یک اسم گذاشه و روی سیو کلیک کرده
- به فایل service-account.json خود مراجه کرده و مقدار این "client_email" متغییر رو به عنوان ایمیل قرار داده و روی دان کلیک کرده
+<p align="center">
+A lightweight Node.js tool for translating subtitle files without paid APIs
+</p>
 
-3 به فایل "index.js" بروید و در خط 6 ایدی شیت که ایجاد کردیم را بزارید
- https://docs.google.com/spreadsheets/d/1S11Ph99yazf9yJvfCghpYAnuqufzrkkhu-cXCugeAek/edit?gid=0#gid=0
- اگر لینک بالا لینک شیت شما باشد این مقدار شیت ایدی شما خواهد بود
- 1S11Ph99yazf9yJvfCghpYAnuqufzrkkhu-cXCugeAek
+---
 
-حالا از این جا به بعد رو هر باری که میخواید ترجمه کنید باید انجام بدید
+## 🚀 Overview
 
-فایل زیرنویس خود را داخل روت پروژه ریخته و اسم او را به "input.srt" تغییر داده
-فایل ایندکس رو اجرا کنید
+**traXl** is a Node.js-based utility that automatically translates `.srt` subtitle files by leveraging **Google Sheets** instead of paid translation APIs.
 
-فایل ترجمه شده را با نودپت نگاه کنید اگر لودینگی در ان دیدید دوباره فایل را اجرا کنید
+The tool extracts subtitle texts, sends them to a Google Sheet where translation is handled using built-in formulas like `GOOGLETRANSLATE`, then retrieves the translated content and generates a new subtitle file while preserving original timestamps.
+
+This approach keeps translations transparent, editable, and cost-free.
+
+---
+
+## ✨ Features
+
+- Automatic `.srt` subtitle translation
+- Preserves original timestamps
+- No paid translation APIs required
+- Powered by Google Sheets API
+- Editable translations directly in Google Sheets
+- Simple and lightweight Node.js implementation
+
+---
+
+## 🔄 How It Works
+
+1. Reads the input `.srt` file  
+2. Extracts subtitle text lines  
+3. Uploads texts to Google Sheets  
+4. Translation is performed inside the sheet  
+5. Fetches translated content  
+6. Generates a new translated `.srt` file  
+
+---
+
+## 🛠 Tech Stack
+
+<table align="center">
+  <tr>
+    <td align="center"><img src="https://icon.icepanel.io/Technology/svg/Node.js.svg" width="32"/><br>Node.js</td>
+    <td align="center"><img src="https://icon.icepanel.io/Technology/svg/JavaScript.svg" width="32"/><br>JavaScript</td>
+    <td align="center">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/googlesheets.svg" width="32"/><br>
+  Google Sheets
+</td>
+
+
+  </tr>
+</table>
+
+---
+
+## ⚙️ Requirements
+
+- Node.js v14 or higher
+- Google account
+- Google Cloud project with Sheets API enabled
+- A shared Google Sheet
+
+---
+
+## 🔑 Getting Google Sheets API JSON Credentials
+
+To use Google Sheets API, you must create a **Service Account** and download its JSON key file.
+
+### Steps
+
+1. Go to **Google Cloud Console**  
+   https://console.cloud.google.com  
+   (VPN recommended)
+
+2. Create a **new project**
+
+3. Search for **Google Sheets API** and click **Enable**
+
+4. Navigate to:  
+   **APIs & Services → Credentials**
+
+5. Click **Create Credentials → Service account**
+
+6. Enter a service account name (e.g. `traxl-service-account`) and continue  
+   (Role assignment can be skipped)
+
+7. Open the created service account and go to the **Keys** tab
+
+8. Click **Add Key → Create new key**
+
+9. Select **JSON** and download the file
+
+10. Move the downloaded file to the project root and rename it exactly to:
+
+```text
+service-account.json
