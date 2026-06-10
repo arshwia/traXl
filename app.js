@@ -1,8 +1,29 @@
-const { processSrtFile } = require('./controllers/srt.controller');
+const fs = require('fs/promises');
 
-// #TODO باید یک کاری کنم که یه کل سیستم دسترسی داشته و بتونه فقط با داشن ادرس فایل فایل رو ترجمه کنه و همون جا ترجمه رو بریزه
+const { processSrtFile } = require('./controllers/srt.controller');
+const { processVttFile } = require('./controllers/vtt.controller');
+
+const { SRT_INPUT, VTT_INPUT } = require('./config/paths.config');
+
 async function main() {
-    await processSrtFile();
+    try {
+        try {
+            await fs.access(SRT_INPUT);
+            console.log('✅ srt');
+            await processSrtFile();
+            return;
+        } catch (err) {}
+
+        try {
+            await fs.access(VTT_INPUT);
+            console.log('✅ vtt');
+            await processVttFile();
+        } catch (err) {
+            console.log('❌ هیچ فایل SRT یا VTT پیدا نشد');
+        }
+    } catch (error) {
+        console.error('خطای کلی:', error);
+    }
 }
 
 main();
