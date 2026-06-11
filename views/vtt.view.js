@@ -19,7 +19,7 @@ function createTranslatedVtt(originalLines, translated) {
         if (index < translated.length) {
             const tr = translated[index];
             index++;
-            return tr;
+            return `1 ${tr}`;
         }
 
         return line;
