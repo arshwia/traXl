@@ -5,13 +5,24 @@ function createTranslatedVtt(originalLines, translated) {
     let index = 0;
 
     const newLines = originalLines.map((line) => {
-        if (/^\d+$/.test(line.trim())) return line;
-        if (line.includes('-->')) return line;
-        if (!line.trim()) return line;
+        const trimmed = line.trim();
 
-        const tr = translated[index];
-        index++;
-        return tr;
+        if (
+            !trimmed ||
+            trimmed === 'WEBVTT' ||
+            /^\d+$/.test(trimmed) ||
+            line.includes('-->')
+        ) {
+            return line;
+        }
+
+        if (index < translated.length) {
+            const tr = translated[index];
+            index++;
+            return tr;
+        }
+
+        return line;
     });
 
     fs.writeFileSync(VTT_OUTPUT, newLines.join('\n'), 'utf-8');
