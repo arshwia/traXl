@@ -9,7 +9,7 @@ async function main() {
     try {
         try {
             await fs.access(SRT_INPUT);
-            console.log('✅ srt');
+            console.log('srt ✅');
             await processSrtFile();
             return;
         } catch (err) {}
@@ -19,7 +19,8 @@ async function main() {
             console.log('✅ vtt');
             await processVttFile();
         } catch (err) {
-            console.log('❌ هیچ فایل SRT یا VTT پیدا نشد');
+            console.log('not faound VTT ❌');
+            console.log(`\n \n \n ${err}`);
         }
     } catch (error) {
         console.error('خطای کلی:', error);
