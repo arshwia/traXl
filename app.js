@@ -19,8 +19,8 @@ async function main() {
             console.log('✅ vtt');
             await processVttFile();
         } catch (err) {
-            console.log('not faound VTT ❌');
             console.log(`\n \n \n ${err}`);
+            console.log('not faound VTT ❌');
         }
     } catch (error) {
         console.error('خطای کلی:', error);

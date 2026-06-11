@@ -8,6 +8,8 @@ async function translateDialogs(dialogs) {
     const client = await auth.getClient();
     const sheet = google.sheets({ version: 'v4', auth: client });
 
+    console.log('✅ Auth successful');
+
     // نوشتن متون خام
     await sheet.spreadsheets.values.update({
         spreadsheetId: SHEET_ID,

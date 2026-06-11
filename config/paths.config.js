@@ -1,8 +1,9 @@
-// نگه داری از مسیر فایل های اس ار تی
-module.exports = {
-    SRT_INPUT: './input.srt',
-    SRT_OUTPUT: './translated.srt',
+const path = require('path');
 
-    VTT_INPUT: './input.vtt',
-    VTT_OUTPUT: './translated.vtt',
+module.exports = {
+    SRT_INPUT: path.join(__dirname, '..', 'input.srt'),
+    SRT_OUTPUT: path.join(__dirname, '..', 'translated.srt'),
+
+    VTT_INPUT: path.join(__dirname, '..', 'input.vtt'),
+    VTT_OUTPUT: path.join(__dirname, '..', 'translated.vtt'),
 };
