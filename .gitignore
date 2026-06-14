@@ -5,3 +5,6 @@ node_modules/
 
 /input.vtt
 /translated.vtt
+
+/inputs
+/outputs
