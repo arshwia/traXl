@@ -3,10 +3,12 @@ const { VTT_OUTPUT } = require('../config/paths.config');
 
 function createTranslatedVtt(originalLines, translated) {
     let index = 0;
+    let isFirst = true;
 
     const newLines = originalLines.map((line) => {
         const trimmed = line.trim();
 
+        // خطوط ساختاری (شماره، تایم، WEBVTT) رو بدون تغییر نگه دار
         if (
             !trimmed ||
             trimmed === 'WEBVTT' ||
@@ -16,16 +18,32 @@ function createTranslatedVtt(originalLines, translated) {
             return line;
         }
 
+        // جایگزینی متن فارسی
         if (index < translated.length) {
-            const tr = translated[index];
+            let text = translated[index].trim();
             index++;
-            return `1 ${tr}`;
+
+            // فقط برای اولین دیالوگ عدد ۱ اضافه کن
+            if (isFirst) {
+                isFirst = false;
+                text = `1 ${text}`;
+            }
+
+            // اضافه کردن کنترل RTL برای نمایش درست فارسی
+            text = '\u202B' + text + '\u202C';
+
+            return text;
         }
 
         return line;
     });
 
-    fs.writeFileSync(VTT_OUTPUT, newLines.join('\n'), 'utf-8');
+    const content = newLines.join('\n');
+
+    // خیلی مهم: UTF-8 بدون BOM
+    fs.writeFileSync(VTT_OUTPUT, content, { encoding: 'utf8' });
+
+    console.log('✅ translated.vtt با UTF-8 و RTL ساخته شد');
 }
 
 module.exports = { createTranslatedVtt };
