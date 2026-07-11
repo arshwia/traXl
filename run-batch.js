@@ -1,6 +1,7 @@
 const fs = require('fs/promises');
 const path = require('path');
 const { exec } = require('child_process');
+const { clouddebugger } = require('googleapis/build/src/apis/clouddebugger');
 
 const INPUT_DIR = path.join(__dirname, 'inputs', 'vtt');
 const OUTPUT_DIR = path.join(__dirname, 'outputs', 'vtt');
@@ -10,6 +11,20 @@ const TEMP_OUTPUT = path.join(__dirname, 'translated.vtt');
 async function ensureDirs() {
     await fs.mkdir(INPUT_DIR, { recursive: true });
     await fs.mkdir(OUTPUT_DIR, { recursive: true });
+}
+
+async function cleanTempFiles() {
+    const tempFiles = [TEMP_INPUT, TEMP_OUTPUT];
+
+    for (const file of tempFiles) {
+        try {
+            await fs.access(file);
+            await fs.unlink(file);
+            console.log(`Deleted: ${path.basename(file)}`);
+        } catch {
+            console.log("status: 200 -> OK")
+        }
+    }
 }
 
 async function batchTranslate() {
